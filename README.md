@@ -84,7 +84,6 @@ location        → location
 people[]        → attendees[]           [[Link]] resolved via People note email property
 category        → calendarId            via Calendar Mapping config
 status          → status                via Status Mapping config
-note body       → description           optional, off by default
 gcal-id         ← id                    written back on create/pull
 gcal-synced     ← updated (timestamp)   written back after every sync
 ```
@@ -217,21 +216,29 @@ Define per-category. Unmapped categories fall back to **Default Calendar** (`pri
 | Timezone | `Europe/Berlin` | Applied to bare `YYYY-MM-DDTHH:MM` values |
 | Conflict strategy | `vault-wins` | What wins when both sides changed |
 | Sync interval | `15` min | Pull frequency |
-| Auto-create notes | on | Create vault notes for new GCal events |
+| Auto-create notes | off | Create vault notes for new GCal events (vault-first workflow: keep off) |
 | Auto-push changes | on | Push note edits 2s after save |
-| Sync body as description | off | Bidirectional note body ↔ GCal description |
+
+---
+
+## Installation via BRAT
+
+1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) from the Obsidian community plugins
+2. BRAT → **Add Beta Plugin** → `larsboes/obsidian-gcal-sync`
+3. Enable the plugin in Obsidian settings
 
 ---
 
 ## Development
 
 ```bash
-npm install
-npm run dev          # watch mode
-npm run build        # production build → dist/
+bun install
+bun run dev          # watch mode
+bun run build        # production build → dist/
+bun run release      # interactive version bump → commit + tag → CI publishes
 
-# Install to vault
-cp dist/main.js dist/manifest.json \
+# Install to vault for manual testing
+cp dist/main.js manifest.json \
   ~/path/to/vault/.obsidian/plugins/obsidian-gcal-sync/
 ```
 
@@ -251,6 +258,20 @@ No relay server. No third-party dependency. The OAuth flow runs entirely locally
 6. `OAuth2Client` refreshes access tokens automatically
 
 Adapted from [obsidian-google-lookup](https://github.com/ntawileh/obsidian-google-lookup) (MIT).
+
+---
+
+## Credits
+
+Built with inspiration from three existing plugins — each informed a different part of the design:
+
+| Plugin | Author | What it contributed |
+|--------|--------|---------------------|
+| [obsidian-google-calendar](https://github.com/YukiGasai/obsidian-google-calendar) | YukiGasai | GCal API integration patterns, OAuth desktop flow |
+| [obsidian-google-lookup](https://github.com/ntawileh/obsidian-google-lookup) | ntawileh | Local OAuth callback server approach (adapted for auth architecture) |
+| [obsidian-contact-sync-plugin](https://github.com/aleksejs1/obsidian-contact-sync-plugin) | aleksejs1 | People note / contact resolution patterns |
+
+The core design (clean 2-field sync layer, property mapping in config, vault-first conflict strategy) is original to this plugin.
 
 ---
 

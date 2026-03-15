@@ -1,0 +1,28 @@
+{
+  "name": "obsidian-gcal-sync",
+  "version": "0.1.0",
+  "description": "Two-way Google Calendar sync for Obsidian",
+  "main": "main.js",
+  "scripts": {
+    "dev": "bun esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && bun esbuild.config.mjs production",
+    "release": "bun run automation/release.ts"
+  },
+  "keywords": ["obsidian", "google", "calendar", "sync"],
+  "author": "Lars Boes",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.19.0",
+    "obsidian": "latest",
+    "tslib": "^2.6.0",
+    "typescript": "^5.2.0"
+  },
+  "dependencies": {
+    "@googleapis/calendar": "^1.0.2",
+    "google-auth-library": "^9.0.0"
+  }
+}

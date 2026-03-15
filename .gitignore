@@ -1,0 +1,10 @@
+node_modules/
+dist/
+package-lock.json
+
+# Obsidian plugin data — contains user OAuth tokens, never commit
+data.json
+
+# Build artifacts that are published via GitHub Releases, not committed
+*.js
+!esbuild.config.mjs

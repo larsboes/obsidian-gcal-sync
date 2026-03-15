@@ -21,11 +21,14 @@ export const DEFAULT_SETTINGS: GCalSyncSettings = {
 
   // Vault status → GCal status
   statusMapping: {
-    planned:   'tentative',
-    confirmed: 'confirmed',
-    active:    'confirmed',
-    completed: 'confirmed',
-    cancelled: 'cancelled',
+    discovered: 'tentative',
+    planned:    'tentative',
+    applied:    'tentative',
+    confirmed:  'confirmed',
+    active:     'confirmed',
+    completed:  'confirmed',
+    cancelled:  'cancelled',
+    rejected:   'cancelled',
   },
 
   // Vault category → GCal calendar ID (user fills in real calendar IDs)
@@ -33,10 +36,11 @@ export const DEFAULT_SETTINGS: GCalSyncSettings = {
     trip:         'primary',
     conference:   'primary',
     hackathon:    'primary',
-    meeting:      'primary',
-    cfp:          'primary',
-    social:       'primary',
     workshop:     'primary',
+    meetup:       'primary',
+    meeting:      'primary',
+    social:       'primary',
+    sport:        'primary',
   },
 
   defaultCalendarId: 'primary',

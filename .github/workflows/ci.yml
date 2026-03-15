@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,3 +29,26 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      # Publish a rolling canary pre-release on every push to main (not PRs)
+      - name: Publish canary release
+        if: github.event_name == 'push'
+        env:
+          PLUGIN_NAME: obsidian-gcal-sync
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(jq -r .version manifest.json)
+          TAG="${VERSION}-canary.$(date -u +%Y%m%d%H%M%S)"
+
+          mkdir $PLUGIN_NAME
+          cp dist/main.js manifest.json manifest-beta.json $PLUGIN_NAME
+          zip -r ${PLUGIN_NAME}-${TAG}.zip $PLUGIN_NAME
+
+          gh release create "$TAG" \
+            --prerelease \
+            --title "Canary ${TAG}" \
+            --notes "Auto-built from \`$(git rev-parse --short HEAD)\` on \`main\`." \
+            dist/main.js \
+            manifest.json \
+            manifest-beta.json \
+            ${PLUGIN_NAME}-${TAG}.zip
